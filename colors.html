@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        /*****BASE STYLE*****/
+        body {
+            margin: 60px 0;
+            font-family: tahoma, sans-serif;
+            width: 100%;
+            background-color: rgba(236, 240, 241, 0.86) ;
+        }
+        
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        ul li {
+            height: 40px;
+            text-align: center;
+            vertical-align: middle;
+            line-height: 40px;
+        }
+        /****************/
+        /**** header*****/
+        #main_header {
+            width: 100%;
+            height: 50px;
+            top: 0;
+            position: fixed;
+            text-align: center;
+            vertical-align: middle;
+            line-height: 50px;
+            background-color: #ecf0f1 ;
+            box-shadow: 0 1px 8px black  ;
+        }
+        #copy-option {
+            width: 80%;
+            padding: .2em;
+            margin: .5em;
+        }
+        /***end header***/
+        /***** Module ******/
+        .wraper {
+            width: 90%;
+            margin: auto;
+            text-align: center;
+        }
+        .item {
+            margin: 20px 0 ; 
+            border: 1px gray solid;
+            padding: 10px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 2px 2px 4px gray , -2px -2px 8px gray ;
+        }
+        #groups .item {
+            width: 200px;
+            display: inline-table;
+            margin: 20px 10px;
+        }
+        
+        .item .name {
+            color: gray;
+        }
+        
+        @media screen and (max-width: 580px) {
+            .wraper{
+                width: 100% ;
+                margin: 0 ;
+            }
+            
+            .item {
+                border: 0, 0, 1px gray solid, 0;
+                padding: 10px;
+                display: block;
+                background-color: white;
+                margin: 10px 0 ;
+            }
+            #groups .item {
+                width: auto ;
+                display: block;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!---------------------------------------------------html------------------------------------------------->
+    <header id="main_header">
+        <select name="copy-option" onchange="rand_color(this)" id="copy-option">
+            <option value="HEX" selected>HEX</option>
+            <option value="#HEX">#HEX</option>
+            <option value="RGB">RGB</option>
+            <option value="RGBA">RGBA</option>
+        </select>
+    </header>
+    <main>
+        <div class="wraper" id="groups"> </div>
+        <div class="wraper" id="collections"> </div>
+    </main>
+    <!-------------------------------------------------------------------------------------------------------->
+    <script>
+        var colors = [["SUNNY", ["F9ED69", "F08A5D", "B83B5E", "6A2C70"]]
+                      , ["OTHER", ["48466D", "3D84A8", "46CDCF", "ABEDD8"]]
+                      , ["WARM", ["3E3E3E", "F4722B", "F6E7C1", "B3A78C"]]
+                      , ["DARKNESS", ["222831", "393E46", "00ADB5", "00FFF5"]]
+                      , ["FROGY", ["00AD7C", "52D681", "B5FF7D", "FFF8B5"]]
+                      , ["Natural", ["83E4B5", "3EC8AC", "4E90A4", "6E60A0"]]
+                      , ["THE AGE", ["718CA1", "59748C", "354D62", "D7F2F7"]]
+                     ];
+        var collections = [
+                ["flat", ["1abc9c", "2ecc71", "3498db", "9b59b6", "34495e", "16a085", "27ae60"
+				, "2980b9", "8e44ad", "2c3e50", "f1c40f", "e67e22", "e74c3c", "ecf0f1"
+				, "95a5a6", "f39c12", "d35400", "c0392b", "bdc3c7", "7f8c8d"]]
+                , ["material design", ["f44336", "e91e63", "9c27b0", "673ab7", "3f51b5", "2196f3", "03a9f4"
+					, "00bcd4", "009688", "4caf50", "8bc34a", "cddc39", "ffeb3b", "ffc107"
+					, "ff9800", "ff5722", "795548", "9e9e9e", "607d8b"]]
+            , ];
+        //the div wher we put 4x colors 
+        var groups = document.getElementById("groups");
+        //the div wher we put collection of colors
+        var div_collections = document.getElementById("collections");
+        
+        //this function can add ul and li with the value of color tables as a background-color
+        function rand_color($data) {
+            groups.innerHTML ="" ;
+            div_collections.innerHTML = "" ;
+            for (g = 0; g < colors.length; g++) {
+                //wrapper coloection
+                var newwrapper = document.createElement("div");
+                newwrapper.setAttribute("class", "item");
+                groups.appendChild(newwrapper);
+                //group header
+                var newh3 = document.createElement("h3");
+                newh3.innerHTML = colors[g][0];
+                newwrapper.appendChild(newh3);
+                //ul
+                var newul = document.createElement("ul");
+                newwrapper.appendChild(newul);
+                for (i = 0; i < colors[g][1].length; i++) {
+                    var newLi = document.createElement("li");
+                    newLi.setAttribute("id", colors[g][1][i]);
+                    //                newLi.setAttribute("ondblclick" , "info(this)") ;
+                    newLi.setAttribute("onmouseleave", "printcolor(this)");
+                    newLi.setAttribute("onmouseenter", "printcolor(this)");
+                    newLi.setAttribute("style", "background-color :" + toHachHex(colors[g][1][i]));
+                    newul.appendChild(newLi);
+                }
+            }
+            //
+            for (g = 0; g < collections.length; g++) {
+                console.log(collections);
+                //wrapper coloection
+                var newwrapper = document.createElement("div");
+                newwrapper.setAttribute("class", "item");
+                div_collections.appendChild(newwrapper);
+                //group header
+                var newh3 = document.createElement("h3");
+                newh3.innerHTML = collections[g][0];
+                newwrapper.appendChild(newh3);
+                //ul
+                var newul = document.createElement("ul");
+                newwrapper.appendChild(newul);
+                for (i = 0; i < collections[g][1].length; i++) {
+                    var newLi = document.createElement("li");
+                    newLi.setAttribute("id", collections[g][1][i]);
+                    newLi.setAttribute("onmouseleave", "printcolor(this)");
+                    newLi.setAttribute("onmouseenter", "printcolor(this)");
+                    //                newLi.setAttribute("ondblclick" , "info(this)") ;
+                    newLi.setAttribute("style", "background-color :" + toHachHex(collections[g][1][i]));
+                    newul.appendChild(newLi);
+                }
+                console.log("new line");
+            }
+        }
+        //this function can show 
+        
+
+        function toRgb(hex) {
+            var r, g, b;
+            r = parseInt(hex.substr(0, 2), 16);
+            g = parseInt(hex.substr(2, 2), 16);
+            b = parseInt(hex.substr(4, 2), 16);
+            return "rgb(" + r + "," + g + "," + b + ")"; //return rgb(r,g,b)
+        }
+
+        function toRgba(hex) {
+            var r, g, b;
+            r = parseInt(hex.substr(0, 2), 16);
+            g = parseInt(hex.substr(2, 2), 16);
+            b = parseInt(hex.substr(4, 2), 16);
+            
+            return "rgba(" + r + "," + g + "," + b + ",1)"; //return rgb(r,g,b,1)
+        }
+        
+        function toHachHex(hex) {
+            return '#' + hex;
+        }
+        //start showing colors
+        rand_color(combobox);
+        
+        
+        var combobox = document.getElementById("copy-option"); 
+        function printcolor($data) {
+            //the selected value from
+            var type = combobox.options[combobox.selectedIndex].value;
+            
+            if ($data.textContent.length > 0) {
+                $data.textContent = "";
+            }
+            else {
+                switch(type){
+                    case "RGBA" : $data.textContent = toRgba($data.getAttribute("id")); break ;
+                    case "HEX" : $data.textContent =  $data.getAttribute("id"); break ;
+                    case "#HEX" : $data.textContent = toHachHex($data.getAttribute("id")); break ;
+                    case "RGB" : $data.textContent = toRgb($data.getAttribute("id")) ; break ;
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
