@@ -90,7 +90,7 @@
 </head>
 
 <body>
-    <!---------------------------------------------------html------------------------------------------------->
+    <!--html-->
     <header id="main_header">
         <select name="copy-option" onchange="rand_color(this)" id="copy-option">
             <option value="HEX" selected>HEX</option>
@@ -103,7 +103,7 @@
         <div class="wraper" id="groups"> </div>
         <div class="wraper" id="collections"> </div>
     </main>
-    <!-------------------------------------------------------------------------------------------------------->
+    <!--End html -->
     <script>
         var colors = [["SUNNY", ["F9ED69", "F08A5D", "B83B5E", "6A2C70"]]
                       , ["OTHER", ["48466D", "3D84A8", "46CDCF", "ABEDD8"]]
@@ -121,15 +121,18 @@
 					, "00bcd4", "009688", "4caf50", "8bc34a", "cddc39", "ffeb3b", "ffc107"
 					, "ff9800", "ff5722", "795548", "9e9e9e", "607d8b"]]
             , ];
-        //the div wher we put 4x colors 
+        //the divs for only 4 colors 
         var groups = document.getElementById("groups");
-        //the div wher we put collection of colors
+        //the divs for collection of colors where colors can be mor than 4
         var div_collections = document.getElementById("collections");
         
         //this function can add ul and li with the value of color tables as a background-color
+	//arg $data : defie the type of colors (RGB or RGBA or HEXA ... )
         function rand_color($data) {
+	    // initialis the DOM
             groups.innerHTML ="" ;
             div_collections.innerHTML = "" ;
+		//loop over collections 
             for (g = 0; g < colors.length; g++) {
                 //wrapper coloection
                 var newwrapper = document.createElement("div");
@@ -139,13 +142,14 @@
                 var newh3 = document.createElement("h3");
                 newh3.innerHTML = colors[g][0];
                 newwrapper.appendChild(newh3);
-                //ul
+                //add <ul> to DOM
                 var newul = document.createElement("ul");
                 newwrapper.appendChild(newul);
+		    //loop over colors in the curent collection of the parent loop
                 for (i = 0; i < colors[g][1].length; i++) {
                     var newLi = document.createElement("li");
                     newLi.setAttribute("id", colors[g][1][i]);
-                    //                newLi.setAttribute("ondblclick" , "info(this)") ;
+                    //add <li> to the <ul>
                     newLi.setAttribute("onmouseleave", "printcolor(this)");
                     newLi.setAttribute("onmouseenter", "printcolor(this)");
                     newLi.setAttribute("style", "background-color :" + toHachHex(colors[g][1][i]));
@@ -178,17 +182,16 @@
                 console.log("new line");
             }
         }
-        //this function can show 
-        
-
+        //convert HEX to RGB
         function toRgb(hex) {
             var r, g, b;
             r = parseInt(hex.substr(0, 2), 16);
             g = parseInt(hex.substr(2, 2), 16);
             b = parseInt(hex.substr(4, 2), 16);
+		
             return "rgb(" + r + "," + g + "," + b + ")"; //return rgb(r,g,b)
         }
-
+	//convert HEX to RGBA
         function toRgba(hex) {
             var r, g, b;
             r = parseInt(hex.substr(0, 2), 16);
@@ -197,19 +200,21 @@
             
             return "rgba(" + r + "," + g + "," + b + ",1)"; //return rgb(r,g,b,1)
         }
-        
+        //add a dash(#) to HEX
         function toHachHex(hex) {
             return '#' + hex;
         }
         //start showing colors
         rand_color(combobox);
-        
-        
+	    
         var combobox = document.getElementById("copy-option"); 
+	    //print color code to li
+	    //arg $data : the string to be printed
         function printcolor($data) {
-            //the selected value from
+            //get the selected value from combobox with id "copy-optio"
             var type = combobox.options[combobox.selectedIndex].value;
             
+		//toggle between printing
             if ($data.textContent.length > 0) {
                 $data.textContent = "";
             }
